@@ -1,4 +1,4 @@
-import { GET_CURRENCIES, SUBMIT_EMAIL } from './actionCreators';
+import { GET_CURRENCIES, SUBMIT_EMAIL, SUBMIT_FORM } from './actionCreators';
 
 const submitEmail = (email) => ({
   type: SUBMIT_EMAIL,
@@ -10,6 +10,11 @@ const listCurrencies = (currency) => ({
   payload: currency,
 });
 
+const submitForm = (state) => ({
+  type: SUBMIT_FORM,
+  payload: state,
+});
+
 const getCurrencies = () => async (dispatch) => {
   const response = await fetch('https://economia.awesomeapi.com.br/json/all');
   const data = await response.json();
@@ -18,4 +23,14 @@ const getCurrencies = () => async (dispatch) => {
   dispatch(listCurrencies(currencies));
 };
 
-export { submitEmail, getCurrencies };
+const getExchangeRates = (expense) => async (dispatch) => {
+  const response = await fetch('https://economia.awesomeapi.com.br/json/all');
+  const data = await response.json();
+  delete data.USDT;
+  dispatch(submitForm({
+    ...expense,
+    exchangeRates: data,
+  }));
+};
+
+export { submitEmail, getCurrencies, getExchangeRates, submitForm };
