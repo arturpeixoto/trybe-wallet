@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { getCurrencies } from '../redux/actions';
 
 class WalletForm extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
+    console.log(dispatch);
     dispatch(getCurrencies());
   }
 
   render() {
     const { currencies } = this.props;
+    console.log(currencies);
     return (
       <>
         <label htmlFor="value-input">
@@ -73,6 +76,15 @@ class WalletForm extends Component {
     );
   }
 }
+
+WalletForm.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  currencies: PropTypes.arrayOf(PropTypes.string),
+};
+
+WalletForm.defaultProps = {
+  currencies: [],
+};
 
 const mapStateToProps = (globalState) => ({
   currencies: globalState.wallet.currencies,

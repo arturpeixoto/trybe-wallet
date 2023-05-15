@@ -1,4 +1,4 @@
-import { GET_CURRENCIES, SUBMIT_EMAIL, SUBMIT_EXPENSE } from './actionCreators';
+import { GET_CURRENCIES, SUBMIT_EMAIL } from './actionCreators';
 
 const submitEmail = (email) => ({
   type: SUBMIT_EMAIL,
