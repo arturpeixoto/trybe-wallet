@@ -8,8 +8,8 @@ class WalletForm extends Component {
     value: '',
     currency: 'USD',
     description: '',
-    method: 'cash',
-    tag: 'food',
+    method: 'Dinheiro',
+    tag: 'Alimentação',
     id: 0,
   };
 
@@ -34,8 +34,8 @@ class WalletForm extends Component {
       value: '',
       currency: 'USD',
       description: '',
-      method: 'cash',
-      tag: 'food',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
       id,
     });
   };
