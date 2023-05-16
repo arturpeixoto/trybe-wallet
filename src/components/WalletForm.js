@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getCurrencies, getExchangeRates } from '../redux/actions';
+import {
+  getExchangeRatesToEdit,
+  editorOn,
+  getCurrencies,
+  getExchangeRates,
+} from '../redux/actions';
+
+const ALIMENTACAO = 'Alimentação';
 
 class WalletForm extends Component {
   state = {
@@ -9,14 +16,20 @@ class WalletForm extends Component {
     currency: 'USD',
     description: '',
     method: 'Dinheiro',
-    tag: 'Alimentação',
+    tag: ALIMENTACAO,
     id: 0,
   };
 
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(getCurrencies());
-    // dispatch(getExchangeRates());
+  }
+
+  componentDidUpdate(prevProps) {
+    const { editor } = this.props;
+    if (editor !== prevProps.editor) {
+      this.handleInfoOnInput();
+    }
   }
 
   handleChange = ({ target }) => {
@@ -35,13 +48,44 @@ class WalletForm extends Component {
       currency: 'USD',
       description: '',
       method: 'Dinheiro',
-      tag: 'Alimentação',
+      tag: ALIMENTACAO,
       id,
     });
   };
 
+  handleInfoOnInput = () => {
+    const { expenses, idToEdit, editor } = this.props;
+    const showExpense = expenses.find((exp) => exp.id === idToEdit);
+    console.log(showExpense);
+    if (editor) {
+      this.setState({
+        value: showExpense.value,
+        currency: showExpense.currency,
+        description: showExpense.description,
+        method: showExpense.method,
+        tag: showExpense.tag,
+        id: showExpense.id,
+      });
+    }
+  };
+
+  handleClickChange = () => {
+    const { dispatch, idToEdit, expenses } = this.props;
+    const editObj = this.state;
+    dispatch(getExchangeRatesToEdit(editObj));
+    dispatch(editorOn(false, idToEdit));
+    this.setState({
+      value: '',
+      currency: 'USD',
+      description: '',
+      method: 'Dinheiro',
+      tag: ALIMENTACAO,
+      id: expenses[expenses.length - 1].id + 1,
+    });
+  };
+
   render() {
-    const { currencies } = this.props;
+    const { currencies, editor } = this.props;
     const { value, currency, description, method, tag } = this.state;
     return (
       <>
@@ -113,12 +157,21 @@ class WalletForm extends Component {
             <option value="Saúde">Saúde</option>
           </select>
         </label>
-        <button
-          type="button"
-          onClick={ this.handleClick }
-        >
-          Adicionar despesa
-        </button>
+        {!editor ? (
+          <button
+            type="button"
+            onClick={ this.handleClick }
+          >
+            Adicionar despesa
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={ this.handleClickChange }
+          >
+            Editar despesa
+          </button>
+        )}
       </>
     );
   }
@@ -127,15 +180,42 @@ class WalletForm extends Component {
 WalletForm.propTypes = {
   dispatch: PropTypes.func.isRequired,
   currencies: PropTypes.arrayOf(PropTypes.string),
+  editor: PropTypes.bool.isRequired,
+  idToEdit: PropTypes.number.isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    value: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    method: PropTypes.string.isRequired,
+    tag: PropTypes.string.isRequired,
+    currency: PropTypes.string.isRequired,
+    exchangeRates: PropTypes.shape({
+      ask: PropTypes.string,
+      bid: PropTypes.string,
+      code: PropTypes.string,
+      codein: PropTypes.string,
+      create_date: PropTypes.string,
+      high: PropTypes.string,
+      low: PropTypes.string,
+      name: PropTypes.string,
+      pctChange: PropTypes.string,
+      timestamp: PropTypes.string,
+      varBid: PropTypes.string,
+    }).isRequired,
+  }).isRequired),
 };
 
 WalletForm.defaultProps = {
   currencies: [],
+  expenses: [],
 };
 
 const mapStateToProps = (globalState) => ({
   currencies: globalState.wallet.currencies,
   exchangeRates: globalState.wallet.expenses.exchangeRates,
+  editor: globalState.wallet.editor,
+  idToEdit: globalState.wallet.idToEdit,
+  expenses: globalState.wallet.expenses,
 });
 
 export default connect(mapStateToProps)(WalletForm);

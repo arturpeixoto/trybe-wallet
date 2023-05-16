@@ -2,7 +2,11 @@ import { GET_CURRENCIES,
   SUBMIT_EMAIL,
   SUBMIT_FORM,
   DELETE_EXPENSE,
+  EDIT_EXPENSE,
+  EDITOR_ON,
 } from './actionCreators';
+
+const APIURL = 'https://economia.awesomeapi.com.br/json/all';
 
 const submitEmail = (email) => ({
   type: SUBMIT_EMAIL,
@@ -19,13 +23,24 @@ const submitForm = (state) => ({
   payload: state,
 });
 
-const deleteExpense = (expenses) => ({
+const deleteExpense = (id) => ({
   type: DELETE_EXPENSE,
-  payload: expenses,
+  payload: id,
+});
+
+const editorOn = (editor, idToEdit) => ({
+  type: EDITOR_ON,
+  editor,
+  idToEdit,
+});
+
+const editExpense = (obj) => ({
+  type: EDIT_EXPENSE,
+  payload: obj,
 });
 
 const getCurrencies = () => async (dispatch) => {
-  const response = await fetch('https://economia.awesomeapi.com.br/json/all');
+  const response = await fetch(APIURL);
   const data = await response.json();
   delete data.USDT;
   const currencies = Object.keys(data);
@@ -33,11 +48,21 @@ const getCurrencies = () => async (dispatch) => {
 };
 
 const getExchangeRates = (expense) => async (dispatch) => {
-  const response = await fetch('https://economia.awesomeapi.com.br/json/all');
+  const response = await fetch(APIURL);
   const data = await response.json();
   delete data.USDT;
   dispatch(submitForm({
     ...expense,
+    exchangeRates: data,
+  }));
+};
+
+const getExchangeRatesToEdit = (editObj) => async (dispatch) => {
+  const response = await fetch(APIURL);
+  const data = await response.json();
+  delete data.USDT;
+  dispatch(editExpense({
+    ...editObj,
     exchangeRates: data,
   }));
 };
@@ -48,4 +73,6 @@ export {
   getExchangeRates,
   submitForm,
   deleteExpense,
+  editorOn,
+  getExchangeRatesToEdit,
 };
