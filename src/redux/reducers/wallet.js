@@ -1,4 +1,4 @@
-import { GET_CURRENCIES, SUBMIT_FORM } from '../actions/actionCreators';
+import { DELETE_EXPENSE, GET_CURRENCIES, SUBMIT_FORM } from '../actions/actionCreators';
 
 const INITIAL_STATE = {
   currencies: [],
@@ -21,6 +21,11 @@ function wallet(state = INITIAL_STATE, action) {
         ...state.expenses,
         action.payload,
       ],
+    };
+  case DELETE_EXPENSE:
+    return {
+      ...state,
+      expenses: action.payload,
     };
   default:
     return state;

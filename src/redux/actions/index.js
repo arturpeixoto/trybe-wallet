@@ -1,4 +1,8 @@
-import { GET_CURRENCIES, SUBMIT_EMAIL, SUBMIT_FORM } from './actionCreators';
+import { GET_CURRENCIES,
+  SUBMIT_EMAIL,
+  SUBMIT_FORM,
+  DELETE_EXPENSE,
+} from './actionCreators';
 
 const submitEmail = (email) => ({
   type: SUBMIT_EMAIL,
@@ -13,6 +17,11 @@ const listCurrencies = (currency) => ({
 const submitForm = (state) => ({
   type: SUBMIT_FORM,
   payload: state,
+});
+
+const deleteExpense = (expenses) => ({
+  type: DELETE_EXPENSE,
+  payload: expenses,
 });
 
 const getCurrencies = () => async (dispatch) => {
@@ -33,4 +42,10 @@ const getExchangeRates = (expense) => async (dispatch) => {
   }));
 };
 
-export { submitEmail, getCurrencies, getExchangeRates, submitForm };
+export {
+  submitEmail,
+  getCurrencies,
+  getExchangeRates,
+  submitForm,
+  deleteExpense,
+};

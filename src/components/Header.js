@@ -24,7 +24,7 @@ class Header extends Component {
           <p>R$</p>
           <p data-testid="total-field">
             { expenses.length > 0
-              ? totalPrice : 0 }
+              ? totalPrice : (0).toFixed(2) }
           </p>
           <p data-testid="header-currency-field">BRL</p>
         </div>

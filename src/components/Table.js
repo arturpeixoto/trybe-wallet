@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { deleteExpense } from '../redux/actions';
 
 class Table extends Component {
   handleConvertion = (expense, type) => {
@@ -17,9 +18,14 @@ class Table extends Component {
     }
   };
 
+  handleDeleteButton(expense) {
+    const { expenses, dispatch } = this.props;
+    const newExpenses = expenses.filter((exp) => exp !== expense);
+    dispatch(deleteExpense(newExpenses));
+  }
+
   render() {
     const { expenses } = this.props;
-    console.log(expenses);
     return (
       <>
         <h1>Descrição dos gastos</h1>
@@ -49,7 +55,21 @@ class Table extends Component {
                   <td>{this.handleConvertion(expense, 'whichExchange')}</td>
                   <td>{this.handleConvertion(expense, 'exchangeValue')}</td>
                   <td>Real</td>
-                  <td>Botão</td>
+                  <td>
+                    <button
+                      type="button"
+                      data-testid="edit-btn"
+                    >
+                      Editar
+                    </button>
+                    <button
+                      type="button"
+                      data-testid="delete-btn"
+                      onClick={ () => this.handleDeleteButton(expense) }
+                    >
+                      Excluir
+                    </button>
+                  </td>
                 </tr>
               ))
             ) : ''}
@@ -61,6 +81,7 @@ class Table extends Component {
 }
 
 Table.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   expenses: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
     value: PropTypes.string.isRequired,
