@@ -209,4 +209,6 @@ const mockData = {
   },
 };
 
+export const defaultEmail = 'artur@gmail.com';
+
 export default mockData;
