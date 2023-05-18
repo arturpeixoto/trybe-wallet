@@ -5,16 +5,15 @@ import { deleteExpense, editorOn } from '../redux/actions';
 
 class Table extends Component {
   handleConvertion = (expense, type) => {
-    switch (type) {
-    case 'currencyName':
+    if (type === 'currencyName') {
       return expense.exchangeRates[expense.currency].name;
-    case 'whichExchange':
+    }
+    if (type === 'whichExchange') {
       return Number(expense.exchangeRates[expense.currency].ask).toFixed(2);
-    case 'exchangeValue':
+    }
+    if (type === 'exchangeValue') {
       return (Number(expense.exchangeRates[expense.currency].ask)
-       * Number(expense.value)).toFixed(2);
-    default:
-      return expense;
+      * Number(expense.value)).toFixed(2);
     }
   };
 

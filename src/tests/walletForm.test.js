@@ -36,28 +36,32 @@ const mockInputs = [
   }];
 
 describe('Testando o WalletForm', () => {
-  it('Testando se existem os inputs no formulário depois do login', () => {
+  it('Testando se existem os inputs no formulário depois do login', async () => {
     const { history } = renderWithRouterAndRedux(<App />);
-    const emailInput = screen.getByLabelText(/email/i);
-    const passwordInput = screen.getByLabelText(/senha/i);
+    const emailInput = screen.getByTestId('email-input');
+    const passwordInput = screen.getByTestId('password-input');
     const loginButton = screen.getByRole('button', {
       name: /entrar/i,
     });
-    userEvent.type(emailInput, 'artur@gmail.com');
-    userEvent.type(passwordInput, '123456');
-    userEvent.click(loginButton);
-    const { pathname } = history.location;
-    expect(pathname).toBe('/carteira');
-    const valueInput = screen.getByTestId(valueTestID);
-    const currencySelector = screen.getByTestId(currencyInput);
-    const descriptionInput = screen.getByTestId(descriptionTestID);
-    const methodInput = screen.getByTestId(methodTestID);
-    const tagInput = screen.getByTestId(tagTestID);
-    expect(valueInput).toBeInTheDocument();
-    expect(currencySelector).toBeInTheDocument();
-    expect(descriptionInput).toBeInTheDocument();
-    expect(methodInput).toBeInTheDocument();
-    expect(tagInput).toBeInTheDocument();
+    act(() => {
+      userEvent.type(emailInput, 'artur@gmail.com');
+      userEvent.type(passwordInput, '123456');
+      userEvent.click(loginButton);
+      const { pathname } = history.location;
+      expect(pathname).toBe('/carteira');
+    });
+    await waitFor(() => {
+      const valueInput = screen.getByTestId(valueTestID);
+      const currencySelector = screen.getByTestId(currencyInput);
+      const descriptionInput = screen.getByTestId(descriptionTestID);
+      const methodInput = screen.getByTestId(methodTestID);
+      const tagInput = screen.getByTestId(tagTestID);
+      expect(valueInput).toBeInTheDocument();
+      expect(currencySelector).toBeInTheDocument();
+      expect(descriptionInput).toBeInTheDocument();
+      expect(methodInput).toBeInTheDocument();
+      expect(tagInput).toBeInTheDocument();
+    });
   });
   it('Teste se o fetch com as chaves de currency estão ocorrendo', async () => {
     const { store } = renderWithRouterAndRedux(<App />, { initialEntries: ['/carteira'] });
@@ -105,7 +109,7 @@ describe('Testando o WalletForm', () => {
       expect(store.getState().wallet.expenses).toHaveLength(2);
     });
   });
-  it.only('Testa se ao clicar editar despesa, a despesa é mostrada nos inputs e alterada no documento', async () => {
+  it('Testa se ao clicar editar despesa, a despesa é mostrada nos inputs e alterada no documento', async () => {
     const { store } = renderWithRouterAndRedux(<App />, { initialEntries: ['/carteira'] });
     const valueInput = screen.getByTestId(valueTestID);
     const currencySelector = screen.getByTestId(currencyInput);
@@ -122,33 +126,33 @@ describe('Testando o WalletForm', () => {
     });
     userEvent.selectOptions(methodInput, mockInputs[0].method);
     userEvent.type(descriptionInput, mockInputs[0].description);
-    act(() => {
-      userEvent.click(addExpenseBtn);
-    });
+    act(() => userEvent.click(addExpenseBtn));
     await waitFor(() => {
       expect(store.getState().wallet.expenses).toHaveLength(1);
-      const editBtn = screen.getByTestId('edit-btn');
-      act(() => {
-        userEvent.click(editBtn);
-      });
-      expect(valueInput).toHaveValue(123);
-      expect(currencySelector).toHaveValue('USD');
-      expect(methodInput).toHaveValue('Dinheiro');
-      expect(descriptionInput).toHaveValue('123 dólares');
-      const editExpenseBtn = screen.getByRole('button', {
-        name: /editar despesa/i,
-      });
-      expect(editExpenseBtn).toBeInTheDocument();
+    });
+    const editBtn = screen.getByTestId('edit-btn');
+    act(() => {
+      userEvent.click(editBtn);
+    });
+    expect(valueInput).toHaveValue(123);
+    expect(currencySelector).toHaveValue('USD');
+    expect(methodInput).toHaveValue('Dinheiro');
+    expect(descriptionInput).toHaveValue('123 dólares');
+    const editExpenseBtn = screen.getByRole('button', {
+      name: /editar despesa/i,
+    });
+    expect(editExpenseBtn).toBeInTheDocument();
+    act(() => {
       userEvent.clear(valueInput);
       userEvent.clear(descriptionInput);
       userEvent.type(descriptionInput, '144 dólares');
       userEvent.type(valueInput, '144');
-      act(() => {
-        userEvent.click(editExpenseBtn);
-      });
-      console.log(store.getState().wallet.expenses);
+      userEvent.click(editExpenseBtn);
     });
-  });
-  it.skip('', () => {
+    await waitFor(() => {
+      expect(store.getState().wallet.expenses[0].value).toBe('144');
+    });
+    const newValue = await screen.findByText('144 dólares');
+    expect(newValue).toBeInTheDocument();
   });
 });
