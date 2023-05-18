@@ -18,9 +18,9 @@ class Header extends Component {
     const { email, expenses } = this.props;
     const totalPrice = this.handleTotalPrice();
     return (
-      <>
-        <p data-testid="email-field">{`Email: ${email}`}</p>
-        <div>
+      <div className="header-div">
+        <p className="header-email" data-testid="email-field">{`Email: ${email}`}</p>
+        <div className="header-total">
           <p>R$</p>
           <p data-testid="total-field">
             { expenses.length > 0
@@ -28,7 +28,7 @@ class Header extends Component {
           </p>
           <p data-testid="header-currency-field">BRL</p>
         </div>
-      </>
+      </div>
     );
   }
 }

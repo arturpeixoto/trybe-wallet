@@ -28,10 +28,10 @@ class Table extends Component {
   render() {
     const { expenses } = this.props;
     return (
-      <>
+      <div className="table-container">
         <h1>Descrição dos gastos</h1>
         <table border="1">
-          <thead>
+          <thead className="table-head">
             <tr>
               <th>Descrição</th>
               <th>Tag</th>
@@ -47,15 +47,18 @@ class Table extends Component {
           <tbody>
             {expenses ? (
               expenses.map((expense) => (
-                <tr key={ expense.id }>
+                <tr key={ expense.id } className="cells">
                   <td>{expense.description}</td>
-                  <td>{expense.tag}</td>
+                  <td className="table-row-even">{expense.tag}</td>
                   <td>{expense.method}</td>
-                  <td>{(Number(expense.value)).toFixed(2)}</td>
+                  <td className="table-row-even">{(Number(expense.value)).toFixed(2)}</td>
                   <td>{this.handleConvertion(expense, 'currencyName')}</td>
-                  <td>{this.handleConvertion(expense, 'whichExchange')}</td>
+                  <td className="table-row-even">
+                    {this
+                      .handleConvertion(expense, 'whichExchange')}
+                  </td>
                   <td>{this.handleConvertion(expense, 'exchangeValue')}</td>
-                  <td>Real</td>
+                  <td className="table-row-even">Real</td>
                   <td>
                     <button
                       type="button"
@@ -77,7 +80,7 @@ class Table extends Component {
             ) : ''}
           </tbody>
         </table>
-      </>
+      </div>
     );
   }
 }

@@ -87,7 +87,7 @@ class WalletForm extends Component {
     const { currencies, editor } = this.props;
     const { value, currency, description, method, tag } = this.state;
     return (
-      <>
+      <div className="form">
         <label htmlFor="value-input">
           Valor
           <input
@@ -171,7 +171,7 @@ class WalletForm extends Component {
             Editar despesa
           </button>
         )}
-      </>
+      </div>
     );
   }
 }

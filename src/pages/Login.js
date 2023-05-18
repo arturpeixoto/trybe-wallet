@@ -34,8 +34,9 @@ class Login extends React.Component {
     const { email, password } = this.state;
     const validation = this.validationFields();
     return (
-      <>
-        <label htmlFor="email-input">
+      <div className="login-form">
+        <h1>Wallet! Sua carteira digital!</h1>
+        <label className="input-email-label" htmlFor="email-input">
           Email
           <input
             type="email"
@@ -47,7 +48,8 @@ class Login extends React.Component {
             required
           />
         </label>
-        <label htmlFor="password-input">
+        <br />
+        <label className="input-password-label" htmlFor="password-input">
           Senha
           <input
             type="password"
@@ -66,7 +68,7 @@ class Login extends React.Component {
         >
           Entrar
         </button>
-      </>
+      </div>
     );
   }
 }
