@@ -114,7 +114,7 @@ class WalletForm extends Component {
               ))}
             </select>
           </label>
-        ) : ''}
+        ) : <p>Carregando...</p>}
         <label htmlFor="description-input">
           Descrição
           <input

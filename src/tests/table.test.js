@@ -5,6 +5,7 @@ import { act } from 'react-dom/test-utils';
 import App from '../App';
 import { renderWithRouterAndRedux } from './helpers/renderWith';
 import { mockData } from './helpers/mockData';
+import Table from '../components/Table';
 
 beforeEach(() => {
   jest.spyOn(global, 'fetch');
@@ -49,7 +50,7 @@ const mockTableHeaders = [
 describe('Testando o componente Table', () => {
   it('Testando o cabeçalho da aplicação', () => {
     act(() => {
-      renderWithRouterAndRedux(<App />, { initialEntries: ['/carteira'] });
+      renderWithRouterAndRedux(<Table />);
     });
     const tableHeader = screen.getAllByRole('columnheader');
     tableHeader.forEach((each, i) => {
@@ -59,6 +60,10 @@ describe('Testando o componente Table', () => {
   });
   it('Testando se a table é renderizada com os elementos da store', async () => {
     const { store } = renderWithRouterAndRedux(<App />, { initialEntries: ['/carteira'] });
+    const h1Table = screen.getByRole('heading', {
+      name: /descrição dos gastos/i,
+    });
+    expect(h1Table).toBeInTheDocument();
     const valueInput = screen.getByTestId(valueTestID);
     const currencySelector = screen.getByTestId(currencyInput);
     const descriptionInput = screen.getByTestId(descriptionTestID);
@@ -84,6 +89,8 @@ describe('Testando o componente Table', () => {
     cellEntries.forEach((each) => {
       expect(each).toBeInTheDocument();
     });
+    const valorConvertido = await screen.findAllByText('584.63');
+    expect(valorConvertido[1].innerHTML).toBe('584.63');
   });
   it('Testando se é possível deletar elementos', async () => {
     const { store } = renderWithRouterAndRedux(<App />, { initialEntries: ['/carteira'] });

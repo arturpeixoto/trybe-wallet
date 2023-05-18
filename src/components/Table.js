@@ -11,10 +11,8 @@ class Table extends Component {
     if (type === 'whichExchange') {
       return Number(expense.exchangeRates[expense.currency].ask).toFixed(2);
     }
-    if (type === 'exchangeValue') {
-      return (Number(expense.exchangeRates[expense.currency].ask)
+    return (Number(expense.exchangeRates[expense.currency].ask)
       * Number(expense.value)).toFixed(2);
-    }
   };
 
   handleDeleteButton(id) {
