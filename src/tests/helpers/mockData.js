@@ -1,4 +1,4 @@
-const mockData = {
+export const mockData = {
   USD: {
     code: 'USD',
     codein: 'BRL',
@@ -210,5 +210,3 @@ const mockData = {
 };
 
 export const defaultEmail = 'artur@gmail.com';
-
-export default mockData;

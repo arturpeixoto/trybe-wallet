@@ -2,9 +2,7 @@ import React from 'react';
 import { screen } from '@testing-library/react';
 import Header from '../components/Header';
 import { renderWithRouterAndRedux } from './helpers/renderWith';
-import mockData from './helpers/mockData';
-
-const defaultEmail = 'artur@gmail.com';
+import mockData, { defaultEmail } from './helpers/mockData';
 
 describe('Testando o Header', () => {
   it('Testando se o email digitado no login aparece na tela', () => {

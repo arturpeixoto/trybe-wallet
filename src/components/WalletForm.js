@@ -56,7 +56,6 @@ class WalletForm extends Component {
   handleInfoOnInput = () => {
     const { expenses, idToEdit, editor } = this.props;
     const showExpense = expenses.find((exp) => exp.id === idToEdit);
-    console.log(showExpense);
     if (editor) {
       this.setState({
         value: showExpense.value,
