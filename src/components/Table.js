@@ -70,6 +70,7 @@ class Table extends Component {
                     <button
                       type="button"
                       data-testid="delete-btn"
+                      id="delete-btn"
                       onClick={ () => this.handleDeleteButton(expense.id) }
                     >
                       Excluir
