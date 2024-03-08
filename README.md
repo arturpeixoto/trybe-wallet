@@ -1,6 +1,6 @@
 # TRYBE WALLET - SUA CARTEIRA DIGITAL
 ## O que é e como funciona?
-O Trybe Wallet foi um projeto feito em front-end em React para criarmos uma carteira digital e que fazia conversões de moedas (atualizadas) com os gastos da pessoa. Também gerava um total em reais do que a pessoa gastou.
+O Trybe Wallet é uma aplicação desenvolvida em React que oferece uma solução completa de carteira digital para facilitar o gerenciamento financeiro. Com esta plataforma, os usuários podem realizar conversões de moedas em tempo real, garantindo que seus gastos estejam sempre atualizados. Além disso, a aplicação gera um resumo preciso do total gasto em reais, proporcionando uma visão clara e organizada dessa carteira virtual.
 ## Como posso utilizar esse projeto na minha máquina ?
 
     1. Faça um git clone ou fork este repositório.
